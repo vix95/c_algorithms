@@ -34,12 +34,10 @@ int main() {
 }
 
 void clearArray(struct Node *p) {
-	for (int i = 0; i < SIZE_ARRAY; i++) {
-		p->word[i] = '\0';
-	}
+	for (int i = 0; i < SIZE_ARRAY; i++) p->word[i] = '\0';
 }
 
-void AssignData(struct Node *p, int id, char word[]) {
+void assignData(struct Node *p, int id, char word[]) {
 	p->id = id;
 	clearArray(p);
 
@@ -53,14 +51,14 @@ void insertEnd(struct Node **head, int id, char word[]) {
 	if (*head == NULL) {
 		struct Node *p = (struct Node*)malloc(sizeof(struct Node));
 		
-		AssignData(p, id, word);
+		assignData(p, id, word);
 		p->next = p->prev = p;
 		*head = p;
 	} else {
 		struct Node *last = (*head)->prev;
 		struct Node *p = (struct Node*)malloc(sizeof(struct Node));
 
-		AssignData(p, id, word);
+		assignData(p, id, word);
 		p->next = *head;
 		(*head)->prev = p;
 		p->prev = last;
@@ -72,7 +70,7 @@ void insertBegin(struct Node **head, int id, char word[]) {
 	struct Node *last = (*head)->prev;
 	struct Node *p = (struct Node*)malloc(sizeof(struct Node));
 	
-	AssignData(p, id, word);
+	assignData(p, id, word);
 	p->next = *head;
 	p->prev = last;
 	last->next = (*head)->prev = p;
@@ -81,7 +79,7 @@ void insertBegin(struct Node **head, int id, char word[]) {
 
 void insertAfter(struct Node **head, int id_inserted, int id_after, char word[]) {
 	struct Node *p = (struct Node*)malloc(sizeof(struct Node));
-	AssignData(p, id_inserted, word);
+	assignData(p, id_inserted, word);
 
 	struct Node *temp = *head;
 	while (temp->id != id_after) temp = temp->next;
@@ -96,7 +94,6 @@ void insertAfter(struct Node **head, int id_inserted, int id_after, char word[])
 
 void printList(struct Node *head) {
 	struct Node *temp = head;
-
 	printf("%c> ", 218);
 
 	while (temp->next != head) {
@@ -109,7 +106,6 @@ void printList(struct Node *head) {
 	printf("%d", temp->id);
 	printWord(temp);
 	printf(" <%c\n", 191);
-
 	printf("%c%c%c%c", 192, 196, 196, 196);
 	temp = temp->next;
 
@@ -144,9 +140,11 @@ void printList(struct Node *head) {
 
 void printWord(struct Node *p) {
 	printf("(");
+
 	for (int i = 0; i < sizeof(p->word); i++) {
 		if (p->word[i] == '\0') break;
 		printf("%c", p->word[i]);
 	}
+
 	printf(")");
 }
