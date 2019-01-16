@@ -17,11 +17,9 @@ void insertBegin(struct Node **head, int id, char word[]);
 void insertAfter(struct Node **head, int id_inserted, int id_after, char word[]);
 void printList(struct Node *head);
 void printWord(struct Node *p);
-void searchNode(struct Node *head, int id, char word[]);
-void removeNode(struct Node *head, int id);
 
 int main() {
-	struct Node* list = NULL;
+	struct Node* list = NULL;  // guard
 	int pos = 0;
 
 	insertEnd(&list, pos++, "aaa");
@@ -29,7 +27,6 @@ int main() {
 	insertEnd(&list, pos++, "ccc");
 	insertBegin(&list, pos++, "ddd");
 	insertAfter(&list, pos++, 2, "eeeeeeeee");
-	searchNode(&list, pos++, "ccc");
 
 	printf(" Doubly Circular Linked List:\n");
 	printList(list);
@@ -72,6 +69,8 @@ void insertEnd(struct Node **head, int id, char word[]) {
 }
 
 void insertBegin(struct Node **head, int id, char word[]) {
+	if (*head == NULL) return;
+
 	struct Node *last = (*head)->prev;
 	struct Node *p = (struct Node*)malloc(sizeof(struct Node));
 	
@@ -83,6 +82,8 @@ void insertBegin(struct Node **head, int id, char word[]) {
 }
 
 void insertAfter(struct Node **head, int id_inserted, int id_after, char word[]) {
+	if (*head == NULL) return;
+
 	struct Node *p = (struct Node*)malloc(sizeof(struct Node));
 	assignData(p, id_inserted, word);
 
@@ -98,7 +99,13 @@ void insertAfter(struct Node **head, int id_inserted, int id_after, char word[])
 }
 
 void printList(struct Node *head) {
+	if (head == NULL) {
+		printf(" List is empty");
+		return;
+	}
+
 	struct Node *p = head;
+	int count = 1;
 	printf(" %c> ", 218);
 
 	while (p->next != head) {
@@ -106,15 +113,15 @@ void printList(struct Node *head) {
 		printWord(p);
 		printf(" <%c> ", 196);
 		p = p->next;
+		count++;
 	}
 
 	printf("%d", p->id);
 	printWord(p);
 	printf(" <%c\n", 191);
-	printf(" %c%c%c%c", 192, 196, 196, 196);
-	p = p->next;
+	printf(" %c", 192);
 
-	while (p->next != head) {
+	for (int i = 0; i < count; i++) {
 		int number_len = 0;
 		int number = p->id;
 
@@ -135,12 +142,11 @@ void printList(struct Node *head) {
 			printf("%c", 196);
 		}
 
-		for (int i = 0; i < 10; i++) printf("%c", 196);
-
 		p = p->next;
 	}
 
-	printf("%c%c", 196, 217);
+	for (int i = 0; i < count * 4 + (count - 1) * 3 + 2; i++) printf("%c", 196);
+	printf("%c", 217);
 }
 
 void printWord(struct Node *p) {
@@ -152,38 +158,4 @@ void printWord(struct Node *p) {
 	}
 
 	printf(")");
-}
-
-void searchNode(struct Node *head, int id, char word[]) {
-	insertEnd(head, id, word);
-	
-	struct Node *p = head;
-	
-	while (p->next != head) {
-		if (p->word == p->word) {
-			if (p->id == id) {
-				return println("Not found\n");
-			}
-			else {
-				return println("Founded at id: %d\n", p->id);
-			}
-		}
-
-		p = p->next;
-	}
-
-	removeNode(head, id);
-}
-
-void removeNode(struct Node *head, int id) {
-	struct Node *p = head;
-
-	while (p->next != head) {
-		if (p->id == id) {
-			struct Node *temp = p;
-			
-		}
-
-		p = p->next;
-	}
 }
